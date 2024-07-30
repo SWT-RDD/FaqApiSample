@@ -29,7 +29,7 @@ Post https://www.sol-idea.com.tw/back/api/CompletionBot/SimplifiedFAQ
 | LogChatLogHistorySN   | 想要接續對話紀錄的對話編號，如果沒有填 -1 |
 | ChatLogs              | 將要送給機器人的字串放在 HumanContent     |
 
-### 請求範例
+### curl 請求範例
 ```
 curl https://www.sol-idea.com.tw/back/api/CompletionBot/SimplifiedFAQ --form jsonChatRoomVM="{\"ApiKey\":\"your_key\", \"LogChatLogHistorySN\":-1,\"ChatLogs\":[{\"HumanContent\": \"你好阿\", }]}"
 ```
