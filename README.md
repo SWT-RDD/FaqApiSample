@@ -30,7 +30,7 @@ Post https://www.sol-idea.com.tw/back/api/CompletionBot/SimplifiedFAQ
 | ChatLogs              | 將要送給機器人的字串放在 HumanContent     |
 
 ### 請求範例
-curl --location 'https://www.sol-idea.com.tw/back/api/CompletionBot/SimplifiedFAQ' --form 'jsonChatRoomVM="{
+curl --location \"https://www.sol-idea.com.tw/back/api/CompletionBot/SimplifiedFAQ\" --form 'jsonChatRoomVM="{
 \\\"ApiKey\\\": \\\"your_key\\\", 
 \\\"LogChatLogHistorySN\\\": -1,
 \\\"ChatLogs\\\": [{\\\"HumanContent\\\": \\\"你好阿\\\" }]
