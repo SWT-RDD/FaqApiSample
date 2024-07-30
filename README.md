@@ -38,7 +38,7 @@ curl https://www.sol-idea.com.tw/back/api/CompletionBot/SimplifiedFAQ --form jso
 #### Layer 1
 | KEY        | VALUE                      |
 | ---------- | -------------------------- |
-| jsonData   | json 字串化後的資料，範例     |
+| JsonData   | json 字串化後的資料，範例     |
 |            | `{                         |
 |            | "ApiKey": "your_key",      |
 |            | "LogChatLogHistorySN": 1234,|
