@@ -49,6 +49,6 @@ curl https://www.sol-idea.com.tw/back/api/CompletionBot/SimplifiedFAQ --form jso
 | KEY                  | VALUE                     |
 | -------------------- | ------------------------- |
 | ApiKey               | 你的 api key              |
-| LogChatLogHistorySN  | 本次對話的對話編號         |
+| LogChatLogHistorySN  | 本次對話的對話編號，如果下次要接著問(保持歷史對話)需要記錄這個編號         |
 | ChatLogs             | 機器人的回應會放在 AIContent |
 
