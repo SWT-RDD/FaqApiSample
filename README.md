@@ -31,7 +31,7 @@ Post https://www.sol-idea.com.tw/back/api/CompletionBot/SimplifiedFAQ
 
 ### 請求範例
 curl --location 'https://www.sol-idea.com.tw/back/api/CompletionBot/SimplifiedFAQ' --form 'jsonChatRoomVM="{
-\"ApiKey\": \"your_key\", 
+\\\"ApiKey\\\": \\\"your_key\\\", 
 \"LogChatLogHistorySN\": -1,
 \"ChatLogs\": [{\"HumanContent\": \"你好阿\" }]
 }"'
