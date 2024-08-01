@@ -18,6 +18,7 @@ Post https://www.sol-idea.com.tw/back/api/CompletionBot/SimplifiedFAQ
 | jsonChatRoomVM | json 字串化後的字典，範例 |
 |                | {                   |
 |                | "ApiKey": "your_key",|
+|                | "ResponseFormat": 0,|
 |                | "LogChatLogHistorySN": -1,|
 |                | "ChatLogs": [{"HumanContent": "你好阿"}]|
 |                | }                   |
@@ -42,6 +43,7 @@ curl https://www.sol-idea.com.tw/back/api/CompletionBot/SimplifiedFAQ --form jso
 | JsonData   | json 字串化後的資料，範例     |
 |            | {                         |
 |            | "ApiKey": "your_key",      |
+|            | "ResponseFormat": 0,|
 |            | "LogChatLogHistorySN": 1234,|
 |            | "ChatLogs": [{"HumanContent": "你好阿", "AIContent": "你好！有什麼我可以幫助你的嗎？"}]|
 |            | }                         |
