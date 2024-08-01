@@ -17,9 +17,9 @@ await PostChatRoomVM(chatRoomVM);
 async Task PostChatRoomVM(ChatRoomVM chatRoomVM)
 {
     var url = "https://www.sol-idea.com.tw/back/api/CompletionBot/SimplifiedFAQ";
-    var json = JsonConvert.SerializeObject(chatRoomVM);
+    var jsonChatRoomVM = JsonConvert.SerializeObject(chatRoomVM);
     MultipartFormDataContent form = new MultipartFormDataContent();
-    form.Add(new StringContent(json), "jsonChatRoomVM");
+    form.Add(new StringContent(jsonChatRoomVM), "jsonChatRoomVM");
 
     using (var client = new HttpClient())
     {
