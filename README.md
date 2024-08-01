@@ -27,7 +27,7 @@ Post https://www.sol-idea.com.tw/back/api/CompletionBot/SimplifiedFAQ
 | --------------------- | --------------------------- |
 | ApiKey                | 你的 api key                |
 | LogChatLogHistorySN   | 想要接續對話紀錄的對話編號，若是開新對話請填 -1 |
-| ChatLogs              | 將要送給機器人的字串放在 HumanContent     |
+| ChatLogs              | 將要送給機器人的字串放在 HumanContent，最少需要3個字，最多200字     |
 
 ### curl 請求範例
 ```
