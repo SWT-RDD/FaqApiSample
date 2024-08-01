@@ -9,6 +9,7 @@ var chatRoomVM = new ChatRoomVM
     {
         new ChatLog { HumanContent = "你好阿"},
     },
+    ResponseFormat = (int)ChatRoomVMResponseFormat.Html
 };
 await PostChatRoomVM(chatRoomVM);
 
@@ -28,7 +29,7 @@ async Task PostChatRoomVM(ChatRoomVM chatRoomVM)
             var responseContent = await response.Content.ReadAsStringAsync();
             var jsonFormat = JsonConvert.DeserializeObject<JsonFormat>(responseContent);
             var data = JsonConvert.DeserializeObject<ChatRoomVM>(jsonFormat.JsonData);
-            Console.WriteLine(data.LogChatLogHistorySN + "  "+ data.ChatLogs.Last().AIContent);
+            Console.WriteLine(data.LogChatLogHistorySN + "  " + data.ChatLogs.Last().AIContent);
         }
         else
         {
@@ -38,6 +39,12 @@ async Task PostChatRoomVM(ChatRoomVM chatRoomVM)
 }
 
 //資料結構
+public enum ChatRoomVMResponseFormat : int
+{
+    Markdown = 0,
+    Html = 1
+}
+
 public class JsonFormat
 {
     public string JsonData { get; set; }
@@ -48,6 +55,7 @@ public class ChatRoomVM
     public string ApiKey { get; set; }
     public int LogChatLogHistorySN { get; set; }
     public List<ChatLog> ChatLogs { get; set; }
+    public int ResponseFormat { get; set; }
 }
 public class ChatLog
 {
