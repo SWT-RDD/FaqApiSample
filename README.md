@@ -74,4 +74,4 @@ curl https://www.sol-idea.com.tw/back/api/CompletionBot/SimplifiedFAQ --form jso
 | 3004                 | 輸入字串過短(少於3字)                  |
 | 4001                 | ApiKey錯誤或不存在                  |
 | 4002                 | 問答次數不足                  |
-| 4004                 | 聊天室編號沒有權限或不存在                  |
+| 4004                 | 對話編號沒有權限或不存在                  |
