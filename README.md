@@ -56,3 +56,22 @@ curl https://www.sol-idea.com.tw/back/api/CompletionBot/SimplifiedFAQ --form jso
 | LogChatLogHistorySN  | 本次對話的對話編號，如果下次要接著問(保持歷史對話)需要記錄這個編號         |
 | ChatLogs             | 機器人的回應會放在 AIContent |
 
+### 回應錯誤處理
+使用 Http 400 Bad Request
+
+#### 錯誤格式
+| KEY                  | VALUE                     |
+| -------------------- | ------------------------- |
+| Code                 | 錯誤代碼                  |
+| Message              | 錯誤訊息                  |
+
+#### 錯誤列表
+| Code                 | Message                   |
+| -------------------- | ------------------------- |
+| 3001                 | Json字串解析失敗                |
+| 3002                 | ChatLogs內容不能為空                  |
+| 3003                 | 輸入字串過長(超過200字)             |
+| 3004                 | 輸入字串過短(少於3字)                  |
+| 4001                 | ApiKey錯誤或不存在                  |
+| 4002                 | 問答次數不足                  |
+| 4004                 | 聊天室編號沒有權限或不存在                  |

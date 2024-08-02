@@ -33,7 +33,16 @@ async Task PostChatRoomVM(ChatRoomVM chatRoomVM)
         }
         else
         {
-            Console.WriteLine($"Failed to post chatRoomVM. Status code: {response.StatusCode}");
+            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                var errorContent = await response.Content.ReadAsStringAsync();
+                var error = JsonConvert.DeserializeObject<ECustomError>(errorContent);
+                Console.WriteLine($"Handled Error: {error.Message}, Code: {error.Code}");
+            }
+            else
+            {
+                Console.WriteLine($"Failed to post chatRoomVM. Status code: {response.StatusCode}");
+            }
         }
     }
 }
@@ -61,5 +70,10 @@ public class ChatLog
 {
     public string HumanContent { get; set; }
     public string AIContent { get; set; }
+}
+public class ECustomError
+{
+    public string Message { get; set; }
+    public string Code { get; set; }
 }
 
