@@ -72,6 +72,6 @@ curl https://www.sol-idea.com.tw/back/api/CompletionBot/SimplifiedFAQ --form jso
 | 3002                 | ChatLogs內容不能為空                  |
 | 3003                 | 輸入字串過長(超過200字)             |
 | 3004                 | 輸入字串過短(少於3字)                  |
-| 4001                 | ApiKey錯誤或不存在                  |
+| 4001                 | ApiKey錯誤、不存在或過期                |
 | 4002                 | 問答次數不足                  |
 | 4004                 | 對話編號沒有權限或不存在                  |
