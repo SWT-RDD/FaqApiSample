@@ -4,7 +4,7 @@
 本 API 用於接收聊天記錄與設定，並返回機器人回應的結果。
 
 ### URL
-Post https://www.sol-idea.com.tw/back/api/CompletionBot/SimplifiedFAQ
+Post https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedFAQ
 
 ### 請求格式
 | KEY            | VALUE                |
