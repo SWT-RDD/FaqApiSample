@@ -16,7 +16,7 @@ await PostChatRoomVM(chatRoomVM);
 //HttpPost副程式
 async Task PostChatRoomVM(ChatRoomVM chatRoomVM)
 {
-    var url = "https://www.sol-idea.com.tw/back/api/CompletionBot/SimplifiedFAQ";
+    var url = "https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedFAQ";
     var jsonChatRoomVM = JsonConvert.SerializeObject(chatRoomVM);
     MultipartFormDataContent form = new MultipartFormDataContent();
     form.Add(new StringContent(jsonChatRoomVM), "jsonChatRoomVM");
