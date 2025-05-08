@@ -133,10 +133,10 @@ curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedStreamingFAQ --form
 | ResponseFormat       | markdown格式0，Html標籤格式1            |
 | LogChatLogHistorySN  | 本次對話的對話編號，如果下次要接著問(保持歷史對話)需要記錄這個編號         |
 | FocusLogChatLogSN    | 用來呼叫Get api的編號         |
-| ChatLogs             | 機器人的回應不會放在 AIContent |
+| ChatLogs             | 機器人的回應不會放在這裡，需要用Get api取得 |
 
 ### Get請求方法
-Get https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedStreamingFAQ/{FocusLogChatLogSN}
+- Get https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedStreamingFAQ/{FocusLogChatLogSN}
 可以使用後端(此範例程式)，或前端(見EventSource)讀取資料
 
 ### 回應錯誤處理
