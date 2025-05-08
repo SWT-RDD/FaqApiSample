@@ -80,8 +80,8 @@ curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedFAQ --form jsonChat
 本 API 用於接收聊天記錄與設定，並返回機器人回應的結果。
 
 ### URL
-Post https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedStreamingFAQ
-Get https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedStreamingFAQ/{sn}
+- Post https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedStreamingFAQ
+- Get https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedStreamingFAQ/{sn}
 
 ### Post請求格式
 | KEY            | VALUE                |
