@@ -137,7 +137,7 @@ curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedStreamingFAQ --form
 
 ### Get請求方法
 - Get https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedStreamingFAQ/{FocusLogChatLogSN}
-可以使用後端(此範例程式)，或前端(見EventSource)讀取資料
+- 可以使用後端(此範例程式)，或前端(見EventSource)讀取資料
 
 ### 回應錯誤處理
 使用 Http 400 Bad Request
