@@ -24,7 +24,7 @@ var chatRoomVM = new ChatRoomVM
 };
 
 //-----------在這裡切換原本的FAQ(解除NonStream註解)，或是Streaming版本(解除Stream Step1 Step2註解)。
-await PostChatRoomVM(chatRoomVM); //NonStream
+//await PostChatRoomVM(chatRoomVM); //NonStream
 
 int sn = await PostChatRoomVMStreaming(chatRoomVM); //Stream Step1
 await GetStreamingResponse(sn); //Stream Step2
