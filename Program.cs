@@ -91,7 +91,7 @@ async Task GetStreamingResponse(int sn)
 
                             if (line.StartsWith("data: "))
                             {
-                                string data = line.Substring(6); // 為了demo，移除"data: "前綴。如果是要傳到前端可以直接傳 (參考EventSource範例)
+                                string data = JsonConvert.DeserializeObject<string>(line.Substring(6)); // 為了demo，移除"data: "前綴。如果是要傳到前端可以直接傳 (參考EventSource範例)
 
                                 if (data == "[END]")
                                 {
