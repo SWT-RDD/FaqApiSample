@@ -20,7 +20,8 @@ var chatRoomVM = new ChatRoomVM
     {
         new ChatLog { HumanContent = "你好嗎?"},
     },
-    ResponseFormat = (int)ChatRoomVMResponseFormat.Html
+    ResponseFormat = (int)ChatRoomVMResponseFormat.Markdown,
+    RequireSearchResults = (int)ChatRoomVMRequireSearchResults.Enable
 };
 
 //-----------在這裡切換原本的FAQ(解除NonStream註解)，或是Streaming版本(解除Stream Step1 Step2註解)。
@@ -46,7 +47,7 @@ async Task<int> PostChatRoomVMStreaming(ChatRoomVM chatRoomVM)
         var responseContent = await response.Content.ReadAsStringAsync();
         var jsonFormat = JsonConvert.DeserializeObject<JsonFormat>(responseContent);
         var data = JsonConvert.DeserializeObject<ChatRoomVM>(jsonFormat.JsonData);
-        Console.WriteLine(data.LogChatLogHistorySN + "  " + data.FocusLogChatLogSN);
+        Console.WriteLine(data.LogChatLogHistorySN + "  " + data.FocusLogChatLogSN + String.Join("\n", data.SearchResults.Select(s => s.Name)));
         return data.FocusLogChatLogSN;
     }
     else
@@ -140,7 +141,7 @@ async Task PostChatRoomVM(ChatRoomVM chatRoomVM)
         var responseContent = await response.Content.ReadAsStringAsync();
         var jsonFormat = JsonConvert.DeserializeObject<JsonFormat>(responseContent);
         var data = JsonConvert.DeserializeObject<ChatRoomVM>(jsonFormat.JsonData);
-        Console.WriteLine(data.LogChatLogHistorySN + "  " + data.ChatLogs.Last().AIContent);
+        Console.WriteLine(data.LogChatLogHistorySN + "  " + data.ChatLogs.Last().AIContent + String.Join("\n", data.SearchResults.Select(s => s.Name)));
     }
     else
     {
@@ -164,6 +165,12 @@ public enum ChatRoomVMResponseFormat : int
     Html = 1
 }
 
+public enum ChatRoomVMRequireSearchResults : int
+{
+    Disable = 0,
+    Enable = 1
+}
+
 public class JsonFormat
 {
     public string JsonData { get; set; }
@@ -176,7 +183,22 @@ public class ChatRoomVM
     public List<ChatLog> ChatLogs { get; set; }
     public int ResponseFormat { get; set; }
     public int FocusLogChatLogSN { get; set; }
+    public int RequireSearchResults { get; set; }
+    public List<SearchResult> SearchResults { get; set;}
 }
+
+public class SearchResult
+{
+    public string Name { get; set; }
+    public string Date { get; set; }
+    public string FileType { get; set; }
+    public string Title { get; set; }
+    public string Abstract { get; set; }
+    public string Image { get; set; }
+    public string IndexName { get; set; }
+    public List<string> CusField { get; set; }
+}
+
 public class ChatLog
 {
     public string HumanContent { get; set; }

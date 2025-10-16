@@ -20,7 +20,8 @@ Post https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedFAQ
 |                | "ApiKey": "your_key",|
 |                | "ResponseFormat": 0,|
 |                | "LogChatLogHistorySN": -1,|
-|                | "ChatLogs": [{"HumanContent": "你好阿"}]|
+|                | "ChatLogs": [{"HumanContent": "你好阿"}],|
+|                | "RequireSearchResults": 1|
 |                | }                   |
 
 #### Layer 2
@@ -30,6 +31,7 @@ Post https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedFAQ
 | ResponseFormat        | 要markdown格式填0，Html標籤格式填1            |
 | LogChatLogHistorySN   | 想要接續對話紀錄的對話編號，若是開新對話請填 -1 |
 | ChatLogs              | 將要送給機器人的字串放在 HumanContent，最少需要3個字，最多200字     |
+| RequireSearchResults  | 是否需要搜尋結果，不需要填0，需要填1            |
 
 ### curl 請求範例
 ```
@@ -45,7 +47,8 @@ curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedFAQ --form jsonChat
 |            | "ApiKey": "your_key",      |
 |            | "ResponseFormat": 0,|
 |            | "LogChatLogHistorySN": 1234,|
-|            | "ChatLogs": [{"HumanContent": "你好阿", "AIContent": "你好！有什麼我可以幫助你的嗎？"}]|
+|            | "ChatLogs": [{"HumanContent": "你好阿", "AIContent": "你好！有什麼我可以幫助你的嗎？"}],|
+|            | "SearchResults": [{"Name": "文件名稱", "Title": "文件標題", ...}]|
 |            | }                         |
 
 #### Layer 2
@@ -55,6 +58,19 @@ curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedFAQ --form jsonChat
 | ResponseFormat       | markdown格式0，Html標籤格式1            |
 | LogChatLogHistorySN  | 本次對話的對話編號，如果下次要接著問(保持歷史對話)需要記錄這個編號         |
 | ChatLogs             | 機器人的回應會放在 AIContent |
+| SearchResults        | 搜尋結果陣列               |
+
+#### Layer 3 (SearchResults部分)
+| KEY                  | VALUE                     |
+| -------------------- | ------------------------- |
+| Name                 | 文件名稱                  |
+| Date                 | 文件日期                  |
+| FileType             | 文件類型                  |
+| Title                | 文件標題                  |
+| Abstract             | 文件摘要                  |
+| Image                | 文件圖片                  |
+| IndexName            | 資料集名稱                  |
+| CusField             | 自訂欄位陣列["自訂1","自訂2","自訂3"]              |
 
 ### 回應錯誤處理
 使用 Http 400 Bad Request
@@ -97,7 +113,8 @@ curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedFAQ --form jsonChat
 |                | "ApiKey": "your_key",|
 |                | "ResponseFormat": 0,|
 |                | "LogChatLogHistorySN": -1,|
-|                | "ChatLogs": [{"HumanContent": "你好阿"}]|
+|                | "ChatLogs": [{"HumanContent": "你好阿"}],|
+|                | "RequireSearchResults": 1|
 |                | }                   |
 
 #### Layer 2
@@ -107,6 +124,7 @@ curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedFAQ --form jsonChat
 | ResponseFormat        | 要markdown格式填0，Html標籤格式填1            |
 | LogChatLogHistorySN   | 想要接續對話紀錄的對話編號，若是開新對話請填 -1 |
 | ChatLogs              | 將要送給機器人的字串放在 HumanContent，最少需要3個字，最多200字     |
+| RequireSearchResults  | 是否需要搜尋結果，不需要填0，需要填1            |
 
 ### curl 請求範例
 ```
@@ -123,7 +141,8 @@ curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedStreamingFAQ --form
 |            | "ResponseFormat": 0,|
 |            | "LogChatLogHistorySN": 1234,|
 |            | "FocusLogChatLogSN": 654321,|
-|            | "ChatLogs": [{"HumanContent": "你好阿",}]|
+|            | "ChatLogs": [{"HumanContent": "你好阿",}],|
+|            | "SearchResults": [{"Name": "文件名稱", "Title": "文件標題", ...}]|
 |            | }                         |
 
 #### Layer 2
@@ -134,6 +153,19 @@ curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedStreamingFAQ --form
 | LogChatLogHistorySN  | 本次對話的對話編號，如果下次要接著問(保持歷史對話)需要記錄這個編號         |
 | FocusLogChatLogSN    | 用來呼叫Get api的編號         |
 | ChatLogs             | 機器人的回應不會放在這裡，需要用Get api取得 |
+| SearchResults        | 搜尋結果陣列               |
+
+#### Layer 3 (SearchResults部分)
+| KEY                  | VALUE                     |
+| -------------------- | ------------------------- |
+| Name                 | 文件名稱                  |
+| Date                 | 文件日期                  |
+| FileType             | 文件類型                  |
+| Title                | 文件標題                  |
+| Abstract             | 文件摘要                  |
+| Image                | 文件圖片                  |
+| IndexName            | 資料集名稱                  |
+| CusField             | 自訂欄位陣列["自訂1","自訂2","自訂3"]              |
 
 ### Get請求方法
 - Get https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedStreamingFAQ/{FocusLogChatLogSN}
