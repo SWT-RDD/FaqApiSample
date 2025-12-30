@@ -30,7 +30,14 @@ await PostChatRoomVM(chatRoomVM); //NonStream
 //int sn = await PostChatRoomVMStreaming(chatRoomVM); //Stream Step1
 //await GetStreamingResponse(sn); //Stream Step2
 
-//await PatchRating(chatRoomVM.ApiKey, sn, 1, "回答很有幫助"); //Rating (使用 Stream Step1 回傳的 sn 來評分)
+//var ratingVM = new RatingVM
+//{
+//    ApiKey = "your_key",
+//    LogChatLogSN = sn, // 使用 Stream Step1 回傳的 sn
+//    RatingType = 1, // 1=按讚、2=按倒讚、3=未評分
+//    RatingFeedback = "回答很有幫助"
+//};
+//await PatchRating(ratingVM); //Rating
 
 
 
@@ -161,17 +168,13 @@ async Task PostChatRoomVM(ChatRoomVM chatRoomVM)
 }
 
 //HttpPatch副程式(Rating)
-async Task PatchRating(string apiKey, int logChatLogSn, int ratingType, string ratingFeedback = "")
+async Task PatchRating(RatingVM ratingVM)
 {
-    var url = $"https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedRating/{logChatLogSn}";
+    var url = "https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedRating";
+    var jsonRatingVM = JsonConvert.SerializeObject(ratingVM);
 
     MultipartFormDataContent form = new MultipartFormDataContent();
-    form.Add(new StringContent(apiKey), "apiKey");
-    form.Add(new StringContent(ratingType.ToString()), "ratingType");
-    if (!string.IsNullOrEmpty(ratingFeedback))
-    {
-        form.Add(new StringContent(ratingFeedback), "ratingFeedback");
-    }
+    form.Add(new StringContent(jsonRatingVM), "jsonRatingVM");
 
     var request = new HttpRequestMessage(new HttpMethod("PATCH"), url);
     request.Content = form;
@@ -250,5 +253,13 @@ public class ECustomError
 {
     public string Message { get; set; }
     public string Code { get; set; }
+}
+
+public class RatingVM
+{
+    public string ApiKey { get; set; }
+    public int LogChatLogSN { get; set; }
+    public int RatingType { get; set; }
+    public string RatingFeedback { get; set; }
 }
 

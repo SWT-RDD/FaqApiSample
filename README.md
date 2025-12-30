@@ -42,6 +42,16 @@ curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedFAQ --form jsonChat
 #### Layer 1
 | KEY        | VALUE                      |
 | ---------- | -------------------------- |
+| JsonFormat | json 格式回應，範例          |
+|            | {                         |
+|            | "JsonData": "{...}",       |
+|            | "Message": "查詢成功",      |
+|            | "Error": false             |
+|            | }                         |
+
+#### Layer 2 (JsonData部分)
+| KEY        | VALUE                      |
+| ---------- | -------------------------- |
 | JsonData   | json 字串化後的資料，範例     |
 |            | {                         |
 |            | "ApiKey": "your_key",      |
@@ -51,7 +61,7 @@ curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedFAQ --form jsonChat
 |            | "SearchResults": [{"Name": "文件名稱", "Title": "文件標題", ...}]|
 |            | }                         |
 
-#### Layer 2
+#### Layer 3
 | KEY                  | VALUE                     |
 | -------------------- | ------------------------- |
 | ApiKey               | 你的 api key              |
@@ -60,7 +70,7 @@ curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedFAQ --form jsonChat
 | ChatLogs             | 機器人的回應會放在 AIContent |
 | SearchResults        | 搜尋結果陣列               |
 
-#### Layer 3 (SearchResults部分)
+#### Layer 4 (SearchResults部分)
 | KEY                  | VALUE                     |
 | -------------------- | ------------------------- |
 | Name                 | 文件名稱                  |
@@ -135,6 +145,16 @@ curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedStreamingFAQ --form
 #### Layer 1
 | KEY        | VALUE                      |
 | ---------- | -------------------------- |
+| JsonFormat | json 格式回應，範例          |
+|            | {                         |
+|            | "JsonData": "{...}",       |
+|            | "Message": "查詢成功",      |
+|            | "Error": false             |
+|            | }                         |
+
+#### Layer 2 (JsonData部分)
+| KEY        | VALUE                      |
+| ---------- | -------------------------- |
 | JsonData   | json 字串化後的資料，範例     |
 |            | {                         |
 |            | "ApiKey": "your_key",      |
@@ -145,7 +165,7 @@ curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedStreamingFAQ --form
 |            | "SearchResults": [{"Name": "文件名稱", "Title": "文件標題", ...}]|
 |            | }                         |
 
-#### Layer 2
+#### Layer 3
 | KEY                  | VALUE                     |
 | -------------------- | ------------------------- |
 | ApiKey               | 你的 api key              |
@@ -155,7 +175,7 @@ curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedStreamingFAQ --form
 | ChatLogs             | 機器人的回應不會放在這裡，需要用Get api取得 |
 | SearchResults        | 搜尋結果陣列               |
 
-#### Layer 3 (SearchResults部分)
+#### Layer 4 (SearchResults部分)
 | KEY                  | VALUE                     |
 | -------------------- | ------------------------- |
 | Name                 | 文件名稱                  |
@@ -195,7 +215,7 @@ curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedStreamingFAQ --form
 本 API 用於對機器人的回答進行評分（按讚、按倒讚）。
 
 ### URL
-Patch https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedRating/{logChatLogSn}
+Patch https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedRating
 
 ### 請求格式
 | KEY            | VALUE                |
@@ -203,28 +223,46 @@ Patch https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedRating/{logChatLog
 | Content-Type   | multipart/form-data  |
 
 ### 請求資料範例
+#### Layer 1
 | KEY            | VALUE                |
 | -------------- | -------------------- |
-| apiKey         | 你的 api key         |
-| ratingType     | 評分類型：1=按讚、2=按倒讚、3=未評分 |
-| ratingFeedback | 評分回饋（選填，最多500字）|
+| jsonRatingVM   | json 字串化後的字典，範例 |
+|                | {                   |
+|                | "ApiKey": "your_key",|
+|                | "LogChatLogSN": 123456,|
+|                | "RatingType": 1,|
+|                | "RatingFeedback": "回答很有幫助"|
+|                | }                   |
 
-### 路徑參數
-| KEY            | VALUE                |
-| -------------- | -------------------- |
-| logChatLogSn   | 對話紀錄編號（從 Stream API 的 FocusLogChatLogSN 取得）|
+#### Layer 2
+| KEY            | VALUE                       |
+| -------------- | --------------------------- |
+| ApiKey         | 你的 api key                |
+| LogChatLogSN   | 對話紀錄編號（從 Stream API 的 FocusLogChatLogSN 取得）|
+| RatingType     | 評分類型：1=按讚、2=按倒讚、3=未評分 |
+| RatingFeedback | 評分回饋（選填，最多500字）  |
 
 ### curl 請求範例
 ```
-curl -X PATCH "https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedRating/123456" --form apiKey="your_key" --form ratingType="1" --form ratingFeedback="回答很有幫助"
+curl -X PATCH "https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedRating" --form jsonRatingVM="{\"ApiKey\":\"your_key\", \"LogChatLogSN\":123456, \"RatingType\":1, \"RatingFeedback\":\"回答很有幫助\"}"
 ```
 記得換掉your_key和123456
 
 ### 回應資料範例
+#### Layer 1
 | KEY        | VALUE                      |
 | ---------- | -------------------------- |
-| Message    | 評分更新成功                |
-| Error      | false                      |
+| JsonFormat | json 格式回應，範例          |
+|            | {                         |
+|            | "Message": "評分更新成功",  |
+|            | "Error": false             |
+|            | }                         |
+
+#### Layer 2
+| KEY        | VALUE                      |
+| ---------- | -------------------------- |
+| Message    | 回應訊息                    |
+| Error      | 是否有錯誤，成功為false      |
 
 ### 回應錯誤處理
 使用 Http 400 Bad Request
@@ -238,6 +276,7 @@ curl -X PATCH "https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedRating/12
 #### 錯誤列表
 | Code                 | Message                   |
 | -------------------- | ------------------------- |
+| 3001                 | Json字串解析失敗                |
 | 4001                 | ApiKey錯誤、不存在或過期                |
 | 4004                 | 對話編號沒有權限或不存在                  |
 | 5001                 | 評分類型異常，必須是1(按讚)、2(按倒讚)或3(未評分) |
