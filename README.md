@@ -191,3 +191,55 @@ curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedStreamingFAQ --form
 | 4002                 | 問答次數不足                  |
 | 4004                 | 對話編號沒有權限或不存在                  |
 
+## Rating版本 API 概述
+本 API 用於對機器人的回答進行評分（按讚、按倒讚）。
+
+### URL
+Patch https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedRating/{logChatLogSn}
+
+### 請求格式
+| KEY            | VALUE                |
+| -------------- | -------------------- |
+| Content-Type   | multipart/form-data  |
+
+### 請求資料範例
+| KEY            | VALUE                |
+| -------------- | -------------------- |
+| apiKey         | 你的 api key         |
+| ratingType     | 評分類型：1=按讚、2=按倒讚、3=未評分 |
+| ratingFeedback | 評分回饋（選填，最多500字）|
+
+### 路徑參數
+| KEY            | VALUE                |
+| -------------- | -------------------- |
+| logChatLogSn   | 對話紀錄編號（從 Stream API 的 FocusLogChatLogSN 取得）|
+
+### curl 請求範例
+```
+curl -X PATCH "https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedRating/123456" --form apiKey="your_key" --form ratingType="1" --form ratingFeedback="回答很有幫助"
+```
+記得換掉your_key和123456
+
+### 回應資料範例
+| KEY        | VALUE                      |
+| ---------- | -------------------------- |
+| Message    | 評分更新成功                |
+| Error      | false                      |
+
+### 回應錯誤處理
+使用 Http 400 Bad Request
+
+#### 錯誤格式
+| KEY                  | VALUE                     |
+| -------------------- | ------------------------- |
+| Code                 | 錯誤代碼                  |
+| Message              | 錯誤訊息                  |
+
+#### 錯誤列表
+| Code                 | Message                   |
+| -------------------- | ------------------------- |
+| 4001                 | ApiKey錯誤、不存在或過期                |
+| 4004                 | 對話編號沒有權限或不存在                  |
+| 5001                 | 評分類型異常，必須是1(按讚)、2(按倒讚)或3(未評分) |
+| 5002                 | 評分回饋過長，最多500字                  |
+

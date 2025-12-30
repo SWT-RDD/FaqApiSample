@@ -25,10 +25,12 @@ var chatRoomVM = new ChatRoomVM
 };
 
 //-----------在這裡切換原本的FAQ(解除NonStream註解)，或是Streaming版本(解除Stream Step1 Step2註解)。
-//await PostChatRoomVM(chatRoomVM); //NonStream
+await PostChatRoomVM(chatRoomVM); //NonStream
 
-int sn = await PostChatRoomVMStreaming(chatRoomVM); //Stream Step1
-await GetStreamingResponse(sn); //Stream Step2
+//int sn = await PostChatRoomVMStreaming(chatRoomVM); //Stream Step1
+//await GetStreamingResponse(sn); //Stream Step2
+
+//await PatchRating(chatRoomVM.ApiKey, sn, 1, "回答很有幫助"); //Rating (使用 Stream Step1 回傳的 sn 來評分)
 
 
 
@@ -158,6 +160,44 @@ async Task PostChatRoomVM(ChatRoomVM chatRoomVM)
     }
 }
 
+//HttpPatch副程式(Rating)
+async Task PatchRating(string apiKey, int logChatLogSn, int ratingType, string ratingFeedback = "")
+{
+    var url = $"https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedRating/{logChatLogSn}";
+
+    MultipartFormDataContent form = new MultipartFormDataContent();
+    form.Add(new StringContent(apiKey), "apiKey");
+    form.Add(new StringContent(ratingType.ToString()), "ratingType");
+    if (!string.IsNullOrEmpty(ratingFeedback))
+    {
+        form.Add(new StringContent(ratingFeedback), "ratingFeedback");
+    }
+
+    var request = new HttpRequestMessage(new HttpMethod("PATCH"), url);
+    request.Content = form;
+
+    var response = await client.SendAsync(request);
+    if (response.IsSuccessStatusCode)
+    {
+        var responseContent = await response.Content.ReadAsStringAsync();
+        var jsonFormat = JsonConvert.DeserializeObject<JsonFormat>(responseContent);
+        Console.WriteLine($"Rating Success: {jsonFormat.Message}");
+    }
+    else
+    {
+        if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+        {
+            var errorContent = await response.Content.ReadAsStringAsync();
+            var error = JsonConvert.DeserializeObject<ECustomError>(errorContent);
+            Console.WriteLine($"Handled Error: {error.Message}, Code: {error.Code}");
+        }
+        else
+        {
+            Console.WriteLine($"Failed to patch rating. Status code: {response.StatusCode}");
+        }
+    }
+}
+
 //資料結構
 public enum ChatRoomVMResponseFormat : int
 {
@@ -174,6 +214,8 @@ public enum ChatRoomVMRequireSearchResults : int
 public class JsonFormat
 {
     public string JsonData { get; set; }
+    public string Message { get; set; }
+    public bool Error { get; set; }
 }
 
 public class ChatRoomVM
