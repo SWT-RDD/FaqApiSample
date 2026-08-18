@@ -13,18 +13,20 @@ Post https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedFAQ
 
 ### 請求資料範例
 #### Layer 1
-| KEY            | VALUE                |
-| -------------- | -------------------- |
-| jsonChatRoomVM | json 字串化後的字典，範例 |
-|                | {                   |
-|                | "ApiKey": "your_key",|
-|                | "ResponseFormat": 0,|
-|                | "LogChatLogHistorySN": -1,|
-|                | "ChatLogs": [{"HumanContent": "你好阿"}],|
-|                | "RequireSearchResults": 1|
-|                | }                   |
+| KEY              | VALUE                                                         |
+| ---------------- | ------------------------------------------------------------- |
+| jsonChatRoomVM   | json 字串化後的字典，範例                                     |
+|                  | {                                                             |
+|                  | "ApiKey": "your_key",                                         |
+|                  | "ResponseFormat": 0,                                          |
+|                  | "LogChatLogHistorySN": -1,                                    |
+|                  | "ChatLogs": [{"HumanContent": "你好阿"}],                     |
+|                  | "RequireSearchResults": 1                                     |
+|                  | }                                                             |
+| jsonFolders      | （可選）json 字串化後的資料集列表，範例                       |
+|                  | [{"Sn": 123, "Priority": 1}, {"Sn": 456, "Priority": 2}]      |
 
-#### Layer 2
+#### Layer 2 (jsonChatRoomVM)
 | KEY                   | VALUE                       |
 | --------------------- | --------------------------- |
 | ApiKey                | 你的 api key                |
@@ -33,11 +35,28 @@ Post https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedFAQ
 | ChatLogs              | 將要送給機器人的字串放在 HumanContent，最少需要3個字，最多200字     |
 | RequireSearchResults  | 是否需要搜尋結果，不需要填0，需要填1            |
 
+#### Layer 2 (jsonFolders 內每一筆)
+| KEY      | VALUE                                                                 |
+| -------- | --------------------------------------------------------------------- |
+| Sn       | 資料集編號                                                            |
+| Priority | 搜尋優先度，數字小者優先嘗試；當前優先度若能回答便不再嘗試後續優先度  |
+
+> 若不帶 `jsonFolders`，或帶入空陣列 `[]`，會自動使用帳號預設的資料集設定。
+> 帶入的編號必須是該 ApiKey 對應使用者有權限的資料集，否則會回傳錯誤。
+
 ### curl 請求範例
+不帶資料集（使用帳號預設）：
 ```
 curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedFAQ --form jsonChatRoomVM="{\"ApiKey\":\"your_key\", \"ResponseFormat\":0, \"LogChatLogHistorySN\":-1,\"ChatLogs\":[{\"HumanContent\": \"你好阿\", }]}"
 ```
-記得換掉your_key
+
+帶入指定資料集：
+```
+curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedFAQ \
+  --form jsonChatRoomVM="{\"ApiKey\":\"your_key\", \"ResponseFormat\":0, \"LogChatLogHistorySN\":-1,\"ChatLogs\":[{\"HumanContent\": \"你好阿\"}]}" \
+  --form jsonFolders="[{\"Sn\":123,\"Priority\":1},{\"Sn\":456,\"Priority\":2}]"
+```
+記得換掉your_key與資料集編號
 ### 回應資料範例
 #### Layer 1
 | KEY        | VALUE                      |
@@ -101,6 +120,7 @@ curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedFAQ --form jsonChat
 | 4001                 | ApiKey錯誤、不存在或過期                |
 | 4002                 | 問答次數不足                  |
 | 4004                 | 對話編號沒有權限或不存在                  |
+| 4006                 | 原始資料集編號沒有權限或不存在                  |
 
 ## Stream版本 API 概述
 本 API 用於接收聊天記錄與設定，並返回機器人回應的結果。
@@ -116,18 +136,20 @@ curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedFAQ --form jsonChat
 
 ### Post請求資料範例
 #### Layer 1
-| KEY            | VALUE                |
-| -------------- | -------------------- |
-| jsonChatRoomVM | json 字串化後的字典，範例 |
-|                | {                   |
-|                | "ApiKey": "your_key",|
-|                | "ResponseFormat": 0,|
-|                | "LogChatLogHistorySN": -1,|
-|                | "ChatLogs": [{"HumanContent": "你好阿"}],|
-|                | "RequireSearchResults": 1|
-|                | }                   |
+| KEY              | VALUE                                                         |
+| ---------------- | ------------------------------------------------------------- |
+| jsonChatRoomVM   | json 字串化後的字典，範例                                     |
+|                  | {                                                             |
+|                  | "ApiKey": "your_key",                                         |
+|                  | "ResponseFormat": 0,                                          |
+|                  | "LogChatLogHistorySN": -1,                                    |
+|                  | "ChatLogs": [{"HumanContent": "你好阿"}],                     |
+|                  | "RequireSearchResults": 1                                     |
+|                  | }                                                             |
+| jsonFolders      | （可選）json 字串化後的資料集列表，範例                       |
+|                  | [{"Sn": 123, "Priority": 1}, {"Sn": 456, "Priority": 2}]      |
 
-#### Layer 2
+#### Layer 2 (jsonChatRoomVM)
 | KEY                   | VALUE                       |
 | --------------------- | --------------------------- |
 | ApiKey                | 你的 api key                |
@@ -136,11 +158,28 @@ curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedFAQ --form jsonChat
 | ChatLogs              | 將要送給機器人的字串放在 HumanContent，最少需要3個字，最多200字     |
 | RequireSearchResults  | 是否需要搜尋結果，不需要填0，需要填1            |
 
+#### Layer 2 (jsonFolders 內每一筆)
+| KEY      | VALUE                                                                 |
+| -------- | --------------------------------------------------------------------- |
+| Sn       | 資料集編號                                                            |
+| Priority | 搜尋優先度，數字小者優先嘗試；當前優先度若能回答便不再嘗試後續優先度  |
+
+> 若不帶 `jsonFolders`，或帶入空陣列 `[]`，會自動使用帳號預設的資料集設定。
+> 帶入的編號必須是該 ApiKey 對應使用者有權限的資料集，否則會回傳錯誤。
+
 ### curl 請求範例
+不帶資料集（使用帳號預設）：
 ```
 curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedStreamingFAQ --form jsonChatRoomVM="{\"ApiKey\":\"your_key\", \"ResponseFormat\":0, \"LogChatLogHistorySN\":-1,\"ChatLogs\":[{\"HumanContent\": \"你好阿\", }]}"
 ```
-記得換掉your_key
+
+帶入指定資料集：
+```
+curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedStreamingFAQ \
+  --form jsonChatRoomVM="{\"ApiKey\":\"your_key\", \"ResponseFormat\":0, \"LogChatLogHistorySN\":-1,\"ChatLogs\":[{\"HumanContent\": \"你好阿\"}]}" \
+  --form jsonFolders="[{\"Sn\":123,\"Priority\":1},{\"Sn\":456,\"Priority\":2}]"
+```
+記得換掉your_key與資料集編號
 ### Post回應資料範例
 #### Layer 1
 | KEY        | VALUE                      |
@@ -210,6 +249,7 @@ curl https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedStreamingFAQ --form
 | 4001                 | ApiKey錯誤、不存在或過期                |
 | 4002                 | 問答次數不足                  |
 | 4004                 | 對話編號沒有權限或不存在                  |
+| 4006                 | 原始資料集編號沒有權限或不存在                  |
 
 ## Rating版本 API 概述
 本 API 用於對機器人的回答進行評分（按讚、按倒讚）。

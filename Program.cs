@@ -24,11 +24,20 @@ var chatRoomVM = new ChatRoomVM
     RequireSearchResults = (int)ChatRoomVMRequireSearchResults.Enable
 };
 
-//-----------在這裡切換原本的FAQ(解除NonStream註解)，或是Streaming版本(解除Stream Step1 Step2註解)。
-await PostChatRoomVM(chatRoomVM); //NonStream
+//(可選) 指定本次搜尋要使用的資料集與優先度，若不帶入則使用帳號預設設定
+//Sn 為資料集編號，Priority 為搜尋優先度(數字小者優先嘗試，前一優先度若能回答便不再嘗試後續)
+List<SelectedFolder> folders = null;
+//folders = new List<SelectedFolder>
+//{
+//    new SelectedFolder { Sn = 123, Priority = 1 },
+//    new SelectedFolder { Sn = 456, Priority = 2 },
+//};
 
-//int sn = await PostChatRoomVMStreaming(chatRoomVM); //Stream Step1
-//await GetStreamingResponse(sn); //Stream Step2
+//-----------在這裡切換原本的FAQ(解除NonStream註解)，或是Streaming版本(解除Stream Step1 Step2註解)。
+//await PostChatRoomVM(chatRoomVM, folders); //NonStream
+
+int sn = await PostChatRoomVMStreaming(chatRoomVM); //Stream Step1
+await GetStreamingResponse(sn); //Stream Step2
 
 //var ratingVM = new RatingVM
 //{
@@ -42,13 +51,16 @@ await PostChatRoomVM(chatRoomVM); //NonStream
 
 
 //HttpPost副程式(Stream Step1)
-async Task<int> PostChatRoomVMStreaming(ChatRoomVM chatRoomVM)
+async Task<int> PostChatRoomVMStreaming(ChatRoomVM chatRoomVM, List<SelectedFolder> folders = null)
 {
     var url = "https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedStreamingFAQ";
     var jsonChatRoomVM = JsonConvert.SerializeObject(chatRoomVM);
 
     MultipartFormDataContent form = new MultipartFormDataContent();
     form.Add(new StringContent(jsonChatRoomVM), "jsonChatRoomVM");
+    //(可選) 帶入要使用的資料集列表，未帶入則沿用帳號預設設定
+    if (folders != null && folders.Count > 0)
+        form.Add(new StringContent(JsonConvert.SerializeObject(folders)), "jsonFolders");
 
     var response = await client.PostAsync(url, form);
     if (response.IsSuccessStatusCode)
@@ -137,12 +149,15 @@ async Task GetStreamingResponse(int sn)
 }
 
 //HttpPost副程式(NonStream)
-async Task PostChatRoomVM(ChatRoomVM chatRoomVM)
+async Task PostChatRoomVM(ChatRoomVM chatRoomVM, List<SelectedFolder> folders = null)
 {
     var url = "https://gufofaq.gufolab.com/api/CompletionBot/SimplifiedFAQ";
     var jsonChatRoomVM = JsonConvert.SerializeObject(chatRoomVM);
     MultipartFormDataContent form = new MultipartFormDataContent();
     form.Add(new StringContent(jsonChatRoomVM), "jsonChatRoomVM");
+    //(可選) 帶入要使用的資料集列表，未帶入則沿用帳號預設設定
+    if (folders != null && folders.Count > 0)
+        form.Add(new StringContent(JsonConvert.SerializeObject(folders)), "jsonFolders");
 
     var response = await client.PostAsync(url, form);
     if (response.IsSuccessStatusCode)
@@ -248,6 +263,12 @@ public class ChatLog
 {
     public string HumanContent { get; set; }
     public string AIContent { get; set; }
+}
+
+public class SelectedFolder
+{
+    public int Sn { get; set; }
+    public int Priority { get; set; }
 }
 public class ECustomError
 {
